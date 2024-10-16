@@ -4,14 +4,19 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: ["https://wedding-spark-frontend.vercel.app"],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], 
-    allowedHeaders: ["Content-Type", "Authorization"], 
-  })
-);
+// cors configuration
+const corsOptions = {
+  origin: ["https://wedding-spark-frontend.vercel.app"],
+  credentials: true, 
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"], 
+  allowedHeaders: ["Content-Type", "Authorization"], 
+};
+
+// Apply CORS to all routes
+app.use(cors(corsOptions));
+
+// Ensure preflight (OPTIONS) requests also use the same CORS settings
+app.options("*", cors(corsOptions));
 
 app.use(express.json({ limit: "16kb" }));
 
